@@ -1,0 +1,14 @@
+.cards__element-button {
+    background-image: url("../../../images/cards-element-button.svg");
+    background-repeat: no-repeat;
+    border: none;
+    width: 22px;
+    height: 18px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: opacity 0.2s linear;
+}
+
+.cards__element-button:hover {
+    opacity: .6;
+}

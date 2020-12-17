@@ -1,0 +1,6 @@
+.popup__icon {
+  margin-top: 60px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}

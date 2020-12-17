@@ -1,0 +1,38 @@
+@import url('./__container/cards__container.css');
+@import url('./__element/cards__element.css');
+@import url('./__container/cards__container.css');
+@import url('./__description/cards__description.css');
+@import url('./__element-title/cards__element-title.css');
+@import url('./__element-button/cards__element-button.css');
+@import url('./__element-img/cards__element-img.css');
+@import url('./__element-remove/cards__element-remove.css');
+@import url('./__element-remove/_hidden/cards__element-remove_hidden.css');
+@import url('./__element-button/_active/cards__element-button_active.css');
+@import url('./__element-like/cards__element-like.css');
+
+.cards {
+    max-width: 882px;
+    margin: 0 auto;
+    margin-top: 48px;
+}
+
+
+@media screen and (max-width: 909px) {
+    .cards {
+        padding-left: 27px;
+        padding-right: 27px;
+    }
+}
+
+@media screen and (max-width: 909px) {
+    .cards {
+        padding-left: 19px;
+        padding-right: 19px;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .cards {
+        margin-top: 36px;
+    }
+}

@@ -1,0 +1,7 @@
+@import url("./__input/login__form__input.css");
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+}

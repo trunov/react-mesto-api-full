@@ -1,0 +1,10 @@
+@import url("./__header/register__header.css");
+@import url("./__form/register__form.css");
+@import url("./__button/register__button.css");
+@import url("./__login-link/register__login-link.css");
+@import url("./__paragraph/register__paragraph.css");
+
+.register {
+  max-width: 358px;
+  margin: 0 auto;
+}

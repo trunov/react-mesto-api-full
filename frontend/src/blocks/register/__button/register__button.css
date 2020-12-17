@@ -1,0 +1,16 @@
+.register__button {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  height: 58px;
+  font-size: 18px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.1s linear;
+}
+
+.register__button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}

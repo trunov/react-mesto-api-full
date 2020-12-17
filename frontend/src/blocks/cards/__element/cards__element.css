@@ -1,0 +1,7 @@
+.cards__element {
+    border-radius: 10px;
+    background-color: white;
+    overflow: hidden;
+    height: 361px;
+    position: relative;
+}

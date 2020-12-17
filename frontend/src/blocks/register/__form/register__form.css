@@ -1,0 +1,7 @@
+@import url("./__input/register__form__input.css");
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+}
