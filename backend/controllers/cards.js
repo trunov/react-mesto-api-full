@@ -45,22 +45,44 @@ module.exports.createCard = (req, res) => {
     });
 };
 
+// module.exports.deleteCard = (req, res) => {
+//   Card.findByIdAndRemove(req.params.id)
+//     .then((deleted) => {
+//       if (!deleted) {
+//         res.status(404).send({ message: "карточка не найдена, код ошибки 404" });
+//       } else {
+//         res.send(deleted);
+//       }
+//     })
+//     .catch((err) => {
+//       if (err.name === "CastError") {
+//         res.status(400).send({ message: "invalid id" });
+//       } else {
+//         res.status(500).send({ message: "Ошибка на стороне сервера" });
+//       }
+//     });
+// };
+
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.id)
-    .then((deleted) => {
-      if (!deleted) {
-        res.status(404).send({ message: "карточка не найдена, код ошибки 404" });
-      } else {
-        res.send(deleted);
+  Card.findById(req.params._id)
+    .select("+owner")
+    .then((card) => {
+      if (card.owner.toString() !== req.user._id) {
+        return Promise.reject(new Error("Нельзя удалить чужую карточку!"));
       }
     })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(400).send({ message: "invalid id" });
-      } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
-      }
-    });
+    .then(() => {
+      Card.findByIdAndRemove(req.params._id)
+        .then((card) => {
+          if (!card) {
+            return Promise.reject(new Error("Запрашиваемый ресурс не найден"));
+          }
+          res.send(card);
+        })
+        .catch(next);
+    })
+    .catch(next);
+
 };
 
 module.exports.likeCard = (req, res) => {
