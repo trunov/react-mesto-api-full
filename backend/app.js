@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 
 const { errors } = require("celebrate");
 
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+
 const routes = require("./routes/index");
 
 const PORT = 3000;
@@ -21,11 +23,15 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
   useUnifiedTopology: true,
 });
 
+app.use(requestLogger);
+
 app.use(routes);
 
 app.use("*", (req, res) => {
   res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
