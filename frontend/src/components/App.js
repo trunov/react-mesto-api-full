@@ -125,27 +125,33 @@ function App() {
   const handleLogin = (email, password) => {
     auth
       .authorize(email, password)
-      .then(handleResponse)
-      .catch((err) => console.log(err));
+      .then((data) => {
+        if (data.token) {
+          auth
+            .getContent(data.token)
+            .then((res) => {
+              setUserData({ email: res.email });
+            })
+            .catch((err) => console.log(err));
+          localStorage.setItem("token", data.token);
+          setLoggedIn(true);
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        setInfoData({
+          icon: false,
+          title: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        handleInfo();
+        console.log(err);
+      });
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserData({ email: "" });
     setLoggedIn(false);
-  };
-
-  const handleResponse = (data) => {
-    auth
-      .getContent(data.token)
-      .then((res) => {
-        setUserData({ email: res.data.email });
-      })
-      .catch((err) => console.log(err));
-
-    localStorage.setItem("token", data.token);
-
-    setLoggedIn(true);
   };
 
   const handleRegister = (password, email) => {
@@ -174,7 +180,7 @@ function App() {
         .getContent(token)
         .then((res) => {
           if (res) {
-            setUserData({ email: res.data.email });
+            setUserData({ email: res.email });
             setLoggedIn(true);
           }
         })

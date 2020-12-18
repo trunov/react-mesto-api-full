@@ -4,14 +4,25 @@ const mongoose = require("mongoose");
 
 const bodyParser = require("body-parser");
 
+const cors = require("cors");
+
 const { errors } = require("celebrate");
 
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const routes = require("./routes/index");
 
-const PORT = 3000;
+const PORT = 3001;
 const app = express();
+
+const allowedCors = [
+  "https://concept.students.nomoredomains.work",
+  "http://localhost:3000",
+];
+
+app.use(cors({
+  origin: allowedCors,
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
