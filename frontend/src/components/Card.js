@@ -22,8 +22,12 @@ function Card({
     likes: likes,
   };
 
-  const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isOwn = card.owner === currentUser._id;
+  // console.log(card.likes);
+  // console.log("curr" + currentUser._id);
+  // const isLiked = card.likes.some((i) => i === currentUser._id);
+
+  const isLiked = card.likes.some((i) => i === currentUser._id);
 
   const deleteButton = `cards__element-remove ${
     isOwn ? "" : "cards__element-remove_hidden"

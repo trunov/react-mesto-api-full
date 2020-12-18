@@ -77,7 +77,7 @@ module.exports.likeCard = (req, res, next) => {
       } else {
         res
           .status(200)
-          .send({ message: "лайк был поставлен данной карточке", card });
+          .send(card);
       }
     })
     .catch((err) => {
@@ -100,7 +100,7 @@ module.exports.dislikeCard = (req, res, next) => {
       } else {
         res
           .status(200)
-          .send({ message: "дизлайк был поставлен данной карточке", card });
+          .send(card);
       }
     })
     .catch((err) => {

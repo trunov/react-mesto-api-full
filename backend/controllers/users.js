@@ -99,7 +99,7 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError("Нет пользователя с таким id");
       } else {
-        res.status(200).send({ message: "данные пользователя обновлены", name: user.name, about: user.about });
+        res.status(200).send({ name: user.name, about: user.about });
       }
     })
     .catch(next);
@@ -130,7 +130,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundError("Нет пользователя с таким id");
       } else {
-        res.status(200).send({ message: "данные пользователя обновлены", avatar: user.avatar });
+        res.status(200).send({ avatar: user.avatar });
       }
     })
     .catch(next);

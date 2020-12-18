@@ -39,7 +39,22 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      history.push("/");
+      const token = localStorage.getItem("token");
+      auth
+        .getContent(token)
+        .then((res) => {
+          if (res) {
+            setUserData({ email: res.email });
+          }
+        })
+        history.push("/");
+        const promises = [api.getUserInfo(), api.getInitialCards()];
+        Promise.all(promises)
+          .then((results) => {
+            setCurrentUser(results[0]);
+            setupCards(results[1]);
+          })
+          .catch((err) => console.log(`Error ${err}`));
     }
   }, [loggedIn]);
 
@@ -91,14 +106,14 @@ function App() {
     api
       .editProfile({ name, description })
       .then((result) => {
-        setCurrentUser(result);
+        setCurrentUser({...currentUser, name: name, about: description});
         closeAllPopups();
       })
       .catch((err) => console.log(`Error ${err}`));
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -126,17 +141,9 @@ function App() {
     auth
       .authorize(email, password)
       .then((data) => {
-        if (data.token) {
-          auth
-            .getContent(data.token)
-            .then((res) => {
-              setUserData({ email: res.email });
-            })
-            .catch((err) => console.log(err));
-          localStorage.setItem("token", data.token);
-          setLoggedIn(true);
-          history.push("/");
-        }
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+        history.push("/");
       })
       .catch((err) => {
         setInfoData({
@@ -192,7 +199,7 @@ function App() {
     api
       .editAvatar({ link })
       .then((result) => {
-        setCurrentUser(result);
+        setCurrentUser({...currentUser, avatar: link})
         closeAllPopups();
       })
       .catch((err) => console.log(`Error ${err}`));
@@ -216,16 +223,18 @@ function App() {
     setSelectedCard({ isOpen: false });
   }
 
-  React.useEffect(() => {
-    const promises = [api.getUserInfo(), api.getInitialCards()];
+  // React.useEffect(() => {
+  //   if(loggedIn) {
+  //     const promises = [api.getUserInfo(), api.getInitialCards()];
 
-    Promise.all(promises)
-      .then((results) => {
-        setCurrentUser(results[0]);
-        setupCards(results[1]);
-      })
-      .catch((err) => console.log(`Error ${err}`));
-  }, []);
+  //     Promise.all(promises)
+  //     .then((results) => {
+  //       setCurrentUser(results[0]);
+  //       setupCards(results[1]);
+  //     })
+  //     .catch((err) => console.log(`Error ${err}`));
+  //   }
+  // }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

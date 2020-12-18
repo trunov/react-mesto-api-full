@@ -36,12 +36,7 @@ const validateUserUpdate = celebrate({
 
 const validateUserAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.required().custom((url) => {
-      if (!validator.isUrl(url)) {
-        throw new CelebrateError("Неверный url");
-      }
-      return url;
-    }),
+    avatar: Joi.string().uri().required(),
   }),
 });
 
