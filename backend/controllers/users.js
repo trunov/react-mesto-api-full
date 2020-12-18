@@ -27,8 +27,25 @@ module.exports.getUser = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("invalid id"));
+      if (err.kind === "ObjectId") {
+        next(new UnauthError("Неверно введен id"));
+      }
+      next(err);
+    });
+};
+
+module.exports.getUserById = (req, res, next) => {
+  User.findById(req.params._id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Нет пользователя с таким id");
+      } else {
+        res.send(user);
+      }
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        next(new UnauthError("Неверно введен id"));
       }
       next(err);
     });

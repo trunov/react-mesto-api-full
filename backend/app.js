@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 
 const bodyParser = require("body-parser");
 
+const { errors } = require("celebrate");
+
 const routes = require("./routes/index");
 
 const PORT = 3000;
@@ -24,6 +26,8 @@ app.use(routes);
 app.use("*", (req, res) => {
   res.status(404).send({ message: "Запрашиваемый ресурс не найден" });
 });
+
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;

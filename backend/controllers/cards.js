@@ -2,7 +2,6 @@ const Card = require("../models/card");
 const NotFoundError = require("../errors/NotFoundError");
 const BadRequestError = require("../errors/BadRequestError");
 const ForbiddenError = require("../errors/ForbiddenError");
-// const UnauthError = require("../errors/UnauthError");
 
 module.exports.getCards = (req, res, next) => {
   Card.find()
@@ -46,7 +45,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params._id)
+  Card.findById(req.params.id)
     .select("+owner")
     .then((card) => {
       if (card.owner.toString() !== req.user._id) {
@@ -54,7 +53,7 @@ module.exports.deleteCard = (req, res, next) => {
       }
     })
     .then(() => {
-      Card.findByIdAndRemove(req.params._id)
+      Card.findByIdAndRemove(req.params.id)
         .then((card) => {
           if (!card) {
             throw new NotFoundError("Запрашиваемый ресурс не найден");
