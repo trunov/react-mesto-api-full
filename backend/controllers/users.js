@@ -35,26 +35,44 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  const { email, password } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      email: email,
-      password: hash,
-    }))
-    .then((newUser) => {
-      if (!newUser) {
-        throw new NotFoundError("Неправильно переданы данные");
-      } else {
-        res.send(newUser);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Ошибка валидации. Введены некорректные данные"));
-      }
-      next(err);
-    });
+  const {
+    name,
+    about,
+    avatar,
+    email,
+    password,
+  } = req.body;
+  if (req.body.password.length < 8) {
+    throw new BadRequestError("Пароль менее 8 символов");
+  } else {
+    bcrypt.hash(password, 10)
+      .then((hash) => User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      }))
+      .then((newUser) => {
+        if (!newUser) {
+          throw new NotFoundError("Неправильно переданы данные");
+        } else {
+          res.send({
+            name: newUser.name,
+            about: newUser.about,
+            avatar: newUser.avatar,
+            email: newUser.email,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.name === "ValidationError") {
+          next(new BadRequestError("Ошибка валидации. Введены некорректные данные"));
+        }
+        next(err);
+      });
+  }
 };
 
 module.exports.updateUser = (req, res, next) => {
