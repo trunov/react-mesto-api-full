@@ -46,7 +46,9 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.id)
-    .select("+owner")
+    .orFail(() => {
+      throw new NotFoundError("карточка не найдена");
+    })
     .then((card) => {
       if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError("Нельзя удалить чужую карточку!");
@@ -110,3 +112,5 @@ module.exports.dislikeCard = (req, res, next) => {
       next(err);
     });
 };
+
+// спасибо за review :)
